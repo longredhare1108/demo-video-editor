@@ -27,12 +27,13 @@ import { Formik } from 'formik';
 
 import AnimatedButton from '../../../components/buttons/AnimatedButton';
 import useScriptRef from '../../../hooks/useScriptRef';
+import AuthenticationController from '../../../api/authentication/AuthenticationController';
 
 import GoogleIcon from '../../../assets/images/icons/social-google.svg';
 
-export default function LoginForm({ ...others }) {
+export default function SigninForm({ ...others }) {
     const theme = useTheme();
-    const scriptedRef = useScriptRef;
+    const scriptedRef = useScriptRef();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
     const [checked, setChecked] = useState(true);
     const [showPassword, setShowPassword] = useState(false);
@@ -134,6 +135,8 @@ export default function LoginForm({ ...others }) {
                         if (scriptedRef.current) {
                             setStatus({ success: true });
                             setSubmitting(false);
+                            AuthenticationController.signin(values);
+                            console.log(values);
                         }
                     } catch (err) {
                         console.error(err);
@@ -160,11 +163,11 @@ export default function LoginForm({ ...others }) {
                             error={Boolean(touched.email && errors.email)}
                             sx={{ ...theme.typography.customInput }}
                         >
-                            <InputLabel htmlFor="outlined-adornment-email-login">
+                            <InputLabel htmlFor="outlined-adornment-email-signin">
                                 Email Address / Username
                             </InputLabel>
                             <OutlinedInput
-                                id="outlined-adornment-email-login"
+                                id="outlined-adornment-email-signin"
                                 type="email"
                                 value={values.email}
                                 name="email"
@@ -174,7 +177,7 @@ export default function LoginForm({ ...others }) {
                                 inputProps={{}}
                             />
                             {touched.email && errors.email && (
-                                <FormHelperText error id="standard-weight-helper-text-email-login">
+                                <FormHelperText error id="standard-weight-helper-text-email-signin">
                                     {errors.email}
                                 </FormHelperText>
                             )}
@@ -185,11 +188,11 @@ export default function LoginForm({ ...others }) {
                             error={Boolean(touched.password && errors.password)}
                             sx={{ ...theme.typography.customInput }}
                         >
-                            <InputLabel htmlFor="outlined-adornment-password-login">
+                            <InputLabel htmlFor="outlined-adornment-password-signin">
                                 Password
                             </InputLabel>
                             <OutlinedInput
-                                id="outlined-adornment-password-login"
+                                id="outlined-adornment-password-signin"
                                 type={showPassword ? 'text' : 'password'}
                                 value={values.password}
                                 name="password"
@@ -214,7 +217,7 @@ export default function LoginForm({ ...others }) {
                             {touched.password && errors.password && (
                                 <FormHelperText
                                     error
-                                    id="standard-weight-helper-text-password-login"
+                                    id="standard-weight-helper-text-password-signin"
                                 >
                                     {errors.password}
                                 </FormHelperText>

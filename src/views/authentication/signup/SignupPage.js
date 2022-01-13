@@ -91,7 +91,7 @@ export default function SignupPage() {
                                         >
                                             <Typography
                                                 component={Link}
-                                                to="/login"
+                                                to="/signin"
                                                 variant="subtitle1"
                                                 sx={{ textDecoration: 'none' }}
                                             >

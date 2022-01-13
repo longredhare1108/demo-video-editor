@@ -5,11 +5,11 @@ import { useTheme } from '@mui/material/styles';
 import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
 
 import Copyright from '../../../components/copyright/Copyright';
-import LoginForm from './LoginForm';
+import SigninForm from './SigninForm';
 import AuthPageWrapper from '../AuthPageWrapper';
 import AuthCardWrapper from '../AuthCardWrapper';
 
-export default function LoginPage() {
+export default function SigninPage() {
     const theme = useTheme();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -77,7 +77,7 @@ export default function LoginPage() {
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <LoginForm />
+                                        <SigninForm />
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Divider />
