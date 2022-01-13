@@ -1,5 +1,5 @@
 
-import { RBOLServerURL } from './server-url';
+import { RBOLServerURL } from '../util/serverUrl';
 
 const baseURL = RBOLServerURL + "/api/auth";
 
