@@ -26,6 +26,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 
+import AuthenticationController from '../../../api/authentication/AuthenticationController';
 import AnimatedButton from '../../../components/buttons/AnimatedButton';
 import useScriptRef from '../../../hooks/useScriptRef';
 import { strengthColor, strengthIndicator } from '../../../utils/password-strength';
@@ -125,11 +126,13 @@ export default function SignupForm({ ...others }) {
 
             <Formik
                 initialValues={{
+                    username: '',
                     email: '',
                     password: '',
                     submit: null,
                 }}
                 validationSchema={Yup.object().shape({
+                    username: Yup.string().max(255).required('Username is required'),
                     email: Yup.string()
                         .email('Must be a valid email')
                         .max(255)
@@ -141,6 +144,8 @@ export default function SignupForm({ ...others }) {
                         if (scriptedRef.current) {
                             setStatus({ success: true });
                             setSubmitting(false);
+                            AuthenticationController.signup(values);
+                            console.log(values);
                         }
                     } catch (err) {
                         console.error(err);
@@ -192,7 +197,7 @@ export default function SignupForm({ ...others }) {
                             sx={{ ...theme.typography.customInput }}
                         >
                             <InputLabel htmlFor="outlined-adornment-email-register">
-                                Email Address / Username
+                                Email Address
                             </InputLabel>
                             <OutlinedInput
                                 id="outlined-adornment-email-register"
@@ -206,6 +211,30 @@ export default function SignupForm({ ...others }) {
                             {touched.email && errors.email && (
                                 <FormHelperText error id="standard-weight-helper-text--register">
                                     {errors.email}
+                                </FormHelperText>
+                            )}
+                        </FormControl>
+
+                        <FormControl
+                            fullWidth
+                            error={Boolean(touched.username && errors.username)}
+                            sx={{ ...theme.typography.customInput }}
+                        >
+                            <InputLabel htmlFor="outlined-adornment-username-register">
+                                Username
+                            </InputLabel>
+                            <OutlinedInput
+                                id="outlined-adornment-username-register"
+                                type="text"
+                                value={values.username}
+                                name="username"
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                inputProps={{}}
+                            />
+                            {touched.username && errors.username && (
+                                <FormHelperText error id="standard-weight-helper-text--register">
+                                    {errors.username}
                                 </FormHelperText>
                             )}
                         </FormControl>

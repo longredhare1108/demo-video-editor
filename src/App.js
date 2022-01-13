@@ -7,7 +7,7 @@ import { CssBaseline, StyledEngineProvider } from '@mui/material';
 
 import themes from './themes';
 
-import LoginPage from './views/authentication/login/LoginPage';
+import SigninPage from './views/authentication/signin/SigninPage';
 import SignupPage from './views/authentication/signup/SignupPage';
 import StudentDashboard from './views/dashboard/student/StudentDashboard';
 
