@@ -130,6 +130,7 @@ export default function SignupForm({ ...others }) {
                     email: '',
                     password: '',
                     submit: null,
+                    role: 'company'
                 }}
                 validationSchema={Yup.object().shape({
                     username: Yup.string().max(255).required('Username is required'),
@@ -144,6 +145,7 @@ export default function SignupForm({ ...others }) {
                         if (scriptedRef.current) {
                             setStatus({ success: true });
                             setSubmitting(false);
+                            
                             AuthenticationController.signup(values);
                             console.log(values);
                         }

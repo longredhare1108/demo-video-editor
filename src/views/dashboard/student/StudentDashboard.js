@@ -28,6 +28,9 @@ import Deposits from './Deposits';
 import Orders from './Orders';
 
 import Copyright from '../../../components/copyright/Copyright';
+import { useDispatch } from 'react-redux';
+
+import {logout} from '../../../state/feature/user/user-action';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const drawerWidth = 240;
@@ -82,7 +85,7 @@ function DashboardContent() {
     const [open, setOpen] = React.useState(true);
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
-
+    const dispatch = useDispatch();
     const toggleDrawer = () => {
         setOpen(!open);
     };
@@ -95,7 +98,10 @@ function DashboardContent() {
         setAnchorElUser(event.currentTarget);
     };
 
-    const handleCloseNavMenu = () => {
+    const handleCloseNavMenu = (e) => {
+        if(e.target.innerHTML === "Logout"){
+            dispatch(logout());
+        }
         setAnchorElNav(null);
     };
 
@@ -162,7 +168,7 @@ function DashboardContent() {
                                 onClose={handleCloseUserMenu}
                             >
                                 {settings.map((setting) => (
-                                    <MenuItem key={setting} onClick={handleCloseNavMenu}>
+                                    <MenuItem key={setting} onClick={(e) => handleCloseNavMenu(e)}>
                                         <Typography textAlign="center">{setting}</Typography>
                                     </MenuItem>
                                 ))}
