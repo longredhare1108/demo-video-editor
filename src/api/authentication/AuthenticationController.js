@@ -9,11 +9,14 @@ const AuthenticationController = {
     signin: (credentials) =>
         axios
             .post(SIGNIN_URL, JSON.stringify(credentials), { headers: Headers.getHeaders() })
-            .then((res) => res.data.payload),
+            .then((res) =>  console.log(res.data)),
     signup: (user) =>
         axios
             .post(SIGNUP_URL, JSON.stringify(user), { headers: Headers.getHeaders() })
-            .then((res) => res.data.payload),
+            .then((res) => {
+                console.log(res.data);
+                window.location.href = "http://localhost:3000/"
+            }),
 };
 
 export default AuthenticationController;

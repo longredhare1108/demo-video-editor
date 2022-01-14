@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useTheme } from '@mui/material/styles';
 import {
@@ -30,10 +31,14 @@ import useScriptRef from '../../../hooks/useScriptRef';
 import AuthenticationController from '../../../api/authentication/AuthenticationController';
 
 import GoogleIcon from '../../../assets/images/icons/social-google.svg';
+import { useDispatch } from 'react-redux';
 
+import {login} from '../../../state/feature/user/user-action'
 export default function SigninForm({ ...others }) {
+    const dispatch = useDispatch();
     const theme = useTheme();
     const scriptedRef = useScriptRef();
+    const navigate = useNavigate();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
     const [checked, setChecked] = useState(true);
     const [showPassword, setShowPassword] = useState(false);
@@ -135,8 +140,10 @@ export default function SigninForm({ ...others }) {
                         if (scriptedRef.current) {
                             setStatus({ success: true });
                             setSubmitting(false);
-                            AuthenticationController.signin(values);
+                            dispatch(login(values))
+                            // AuthenticationController.signin(values);
                             console.log(values);
+                            navigate('../dashboard', { replace: true });
                         }
                     } catch (err) {
                         console.error(err);

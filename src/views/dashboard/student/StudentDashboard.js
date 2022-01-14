@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -28,6 +29,9 @@ import Deposits from './Deposits';
 import Orders from './Orders';
 
 import Copyright from '../../../components/copyright/Copyright';
+import { useDispatch } from 'react-redux';
+
+import {logout} from '../../../state/feature/user/user-action';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const drawerWidth = 240;
@@ -79,10 +83,11 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const mdTheme = createTheme();
 
 function DashboardContent() {
+    const navigate = useNavigate();
     const [open, setOpen] = React.useState(true);
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
-
+    const dispatch = useDispatch();
     const toggleDrawer = () => {
         setOpen(!open);
     };
@@ -95,12 +100,30 @@ function DashboardContent() {
         setAnchorElUser(event.currentTarget);
     };
 
-    const handleCloseNavMenu = () => {
+    const handleCloseNavMenu = (e) => {
+        if(e.target.innerHTML === "Logout"){
+            dispatch(logout());
+        }
         setAnchorElNav(null);
     };
 
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
+    };
+
+    const handleDashboardClick = () => {
+        handleCloseNavMenu();
+        navigate('/dashboard', { replace: true });
+    };
+
+    const handleSettingsClick = () => {
+        handleCloseNavMenu();
+        navigate('/', { replace: true });
+    };
+
+    const handleLogout = () => {
+        handleCloseNavMenu();
+        navigate('/', { replace: true });
     };
 
     return (
@@ -161,11 +184,15 @@ function DashboardContent() {
                                 open={Boolean(anchorElUser)}
                                 onClose={handleCloseUserMenu}
                             >
-                                {settings.map((setting) => (
-                                    <MenuItem key={setting} onClick={handleCloseNavMenu}>
-                                        <Typography textAlign="center">{setting}</Typography>
-                                    </MenuItem>
-                                ))}
+                                <MenuItem onClick={handleDashboardClick}>
+                                    <Typography textAlign="center">Dashboard</Typography>
+                                </MenuItem>
+                                <MenuItem onClick={handleCloseNavMenu}>
+                                    <Typography textAlign="center">Settings</Typography>
+                                </MenuItem>
+                                <MenuItem onClick={handleLogout}>
+                                    <Typography textAlign="center">Logout</Typography>
+                                </MenuItem>
                             </Menu>
                         </Box>
                     </Toolbar>
