@@ -31,7 +31,7 @@ import Orders from './Orders';
 import Copyright from '../../../components/copyright/Copyright';
 import { useDispatch } from 'react-redux';
 
-import {logout} from '../../../state/feature/user/user-action';
+import { logout } from '../../../state/feature/user/user-action';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const drawerWidth = 240;
@@ -101,9 +101,6 @@ function DashboardContent() {
     };
 
     const handleCloseNavMenu = (e) => {
-        if(e.target.innerHTML === "Logout"){
-            dispatch(logout());
-        }
         setAnchorElNav(null);
     };
 
@@ -121,9 +118,12 @@ function DashboardContent() {
         navigate('/', { replace: true });
     };
 
-    const handleLogout = () => {
+    const handleLogout = (e) => {
         handleCloseNavMenu();
-        navigate('/', { replace: true });
+        if (e.target.innerHTML === 'Logout') {
+            dispatch(logout());
+        }
+        //navigate('/', { replace: true });
     };
 
     return (
