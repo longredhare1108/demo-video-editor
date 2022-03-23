@@ -13,8 +13,8 @@ let listOfImagesExample = [
     'image2.jpg', 'https://media.istockphoto.com/photos/eagle-hunter-standing-on-the-background-of-mountains-in-kyrgyzstan-picture-id1341309784?b=1&k=20&m=1341309784&s=170667a&w=0&h=i1AHUOcYCL6_UPAHQWRyJtPXtlzgQfln7TlPf-hcrIs=',
 ]
 export const RenderVideo = (props) => {
-    useEffect(async () => {
-        let {listOfImages}  = props
+    const initializeData = async () => {
+        let { listOfImages } = props
         if (listOfImages === undefined) {
             listOfImages = listOfImagesExample
         }
@@ -42,8 +42,7 @@ export const RenderVideo = (props) => {
             bitrate: 15000000,
             avc: { format: "avc" }
         })
-    })
-
+    }
 
     const onVideoEncodingComplete = () => {
         console.log("video encoding complete !")
@@ -57,7 +56,8 @@ export const RenderVideo = (props) => {
         console.log("file saved !");
     }
 
-    const encode = () => {
+    const encode = async () => {
+        await initializeData();
         for (let index = 0; index < videoFrames.length; index++) {
             const videoFrame = videoFrames[index];
             videoEncoder.encode(videoFrame);
