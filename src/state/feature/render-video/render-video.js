@@ -12,12 +12,14 @@ var fps = 25;
 let listOfImagesExample = [
     'image2.jpg', 'https://media.istockphoto.com/photos/eagle-hunter-standing-on-the-background-of-mountains-in-kyrgyzstan-picture-id1341309784?b=1&k=20&m=1341309784&s=170667a&w=0&h=i1AHUOcYCL6_UPAHQWRyJtPXtlzgQfln7TlPf-hcrIs=',
 ]
+var videoDuration =0;
 export const RenderVideo = (props) => {
     const initializeData = async () => {
         let { listOfImages } = props
         if (listOfImages === undefined) {
             listOfImages = listOfImagesExample
         }
+        videoDuration=listOfImages.length * 5000;
         for (let index = 0; index < listOfImages.length; index++) {
             await fetch(listOfImages[index])
                 .then(response => response.blob())
@@ -80,7 +82,6 @@ export const RenderVideo = (props) => {
             cts: 0,
             is_sync: false
         }
-        var videoDuration = 10000;
 
 
         outputFile = MP4Box.createFile();
