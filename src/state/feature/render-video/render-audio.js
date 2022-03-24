@@ -284,7 +284,13 @@ export const renderAudio = (props) => {
     }
 
     let loadFile = (audioFile) => {
-        var url = URL.createObjectURL(audioFile);
+        console.log("audioFile", audioFile)
+        var url = null;
+        if(audioFile.name === undefined) {
+            url = audioFile;
+        } else {
+            url = URL.createObjectURL(audioFile);
+        }
         fetch(url).then((response) => {
             //we fill our Mp4BoxFile with the data of our video file
             let offset = 0;
