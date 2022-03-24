@@ -1,6 +1,8 @@
 import { Button } from "@mui/material";
-import MP4Box from "mp4box";
+import MP4Box from "../../../lib/mp4box.all";
 import { useEffect } from "react";
+import { renderAudio } from "./render-audio";
+import audio1 from "../../../assets/sound/audio1.mp4"
 let time = 0;
 let videoFrames = [];
 var videoEncoder = null;
@@ -9,19 +11,14 @@ var outputFile = null;
 var encodedVideoFrameCount = 0;
 var timestampImage = 0;
 var fps = 25;
-let listOfImagesExample = [
-    'image2.jpg', 'https://media.istockphoto.com/photos/eagle-hunter-standing-on-the-background-of-mountains-in-kyrgyzstan-picture-id1341309784?b=1&k=20&m=1341309784&s=170667a&w=0&h=i1AHUOcYCL6_UPAHQWRyJtPXtlzgQfln7TlPf-hcrIs=',
-]
 var videoDuration =0;
 export const RenderVideo = (props) => {
+    const { listOfImages, audioFile } = props
     const initializeData = async () => {
-        let { listOfImages } = props
-        if (listOfImages === undefined) {
-            listOfImages = listOfImagesExample
-        }
-        videoDuration=listOfImages.length * 5000;
+        
         for (let index = 0; index < listOfImages.length; index++) {
-            await fetch(listOfImages[index])
+            videoDuration +=listOfImages[index].duration;
+            await fetch(listOfImages[index].src)
                 .then(response => response.blob())
                 .then(blob => createImageBitmap(blob).then((bmp) => {
                     timestampImage += 5000;
@@ -54,8 +51,15 @@ export const RenderVideo = (props) => {
     }
 
     const saveFile = () => {
-        outputFile.save("video.mp4");
-        console.log("file saved !");
+        // outputFile.save("video.mp4");
+        console.log("Finish to create video file !");
+        const params = {
+            audioFile,
+            outputFile,
+            videoDuration
+        }
+        renderAudio(params);
+        
     }
 
     const encode = async () => {
@@ -99,7 +103,6 @@ export const RenderVideo = (props) => {
                 let buffer = new ArrayBuffer(encodedChunk.byteLength);
                 encodedChunk.copyTo(buffer);
                 const timestamp = videoEncodingSampleOptions.duration * encodedVideoFrameCount;
-                console.log("timestamp", timestamp)
                 videoEncodingSampleOptions.dts = videoEncodingSampleOptions.cts = timestamp;
                 videoEncodingSampleOptions.is_sync = encodedChunk.type == "key";
                 outputFile.addSample(encodingVideoTrack, buffer, videoEncodingSampleOptions);
