@@ -140,7 +140,6 @@ export default function SigninForm({ ...others }) {
                             setSubmitting(false);
                             dispatch(login(values))
                             // AuthenticationController.signin(values);
-                            console.log(values);
                         }
                     } catch (err) {
                         console.error(err);
