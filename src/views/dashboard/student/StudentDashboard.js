@@ -101,6 +101,9 @@ function DashboardContent() {
     };
 
     const handleCloseNavMenu = (e) => {
+        if(e.target.innerHTML === "Logout"){
+            dispatch(logout());
+        }
         setAnchorElNav(null);
     };
 
@@ -184,15 +187,11 @@ function DashboardContent() {
                                 open={Boolean(anchorElUser)}
                                 onClose={handleCloseUserMenu}
                             >
-                                <MenuItem onClick={handleDashboardClick}>
-                                    <Typography textAlign="center">Dashboard</Typography>
-                                </MenuItem>
-                                <MenuItem onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">Settings</Typography>
-                                </MenuItem>
-                                <MenuItem onClick={handleLogout}>
-                                    <Typography textAlign="center">Logout</Typography>
-                                </MenuItem>
+                                {settings.map((setting) => (
+                                    <MenuItem key={setting} onClick={(e) => handleCloseNavMenu(e)}>
+                                        <Typography textAlign="center">{setting}</Typography>
+                                    </MenuItem>
+                                ))}
                             </Menu>
                         </Box>
                     </Toolbar>

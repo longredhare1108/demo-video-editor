@@ -23,8 +23,8 @@ export default function App() {
             <ThemeProvider theme={themes(customization)}>
                 <CssBaseline />
                 <Routes>
-                    <Route path="signin" element={<SigninPage />} />
-                    {/* <Route path="/" element={<SigninPage />} /> */}
+                    <Route path="/login" element={<SigninPage />} />
+                    <Route path="/" element={<SigninPage />} />
                     <Route path="signup" element={<SignupPage />} />
                     <Route path="dashboard" element={<StudentDashboard />} />
                     <Route path="dashboard/creator" element={<MainLayout />}>
