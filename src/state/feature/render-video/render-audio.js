@@ -139,10 +139,22 @@ export const renderAudio = (props) => {
         audioEncoder = new window.AudioEncoder({
             output: (encodedChunk, config) => {
                 if (encodingAudioTrack === null) {
-                    var cutDuration = (videoDuration / 1000) * ONE_SECOND_IN_MICROSECOND;
-                    totalaudioEncodeCount = Math.floor(cutDuration / encodedChunk.duration);
+                    var videoDurationLength = (videoDuration / 1000) * ONE_SECOND_IN_MICROSECOND;
+                    let trackDuration;
+                    console.log("videoDurationLength", videoDurationLength)
+                    console.log("audioTotalTimestamp", audioTotalTimestamp)
+                    if (audioTotalTimestamp > videoDurationLength) {
+                        totalaudioEncodeCount = Math.floor(videoDurationLength / encodedChunk.duration);
+                        trackDuration = videoDurationLength / ONE_SECOND_IN_MICROSECOND;
+                    } else {
+                        totalaudioEncodeCount = Math.floor(audioTotalTimestamp / encodedChunk.duration);
+                        trackDuration = audioTotalTimestamp / ONE_SECOND_IN_MICROSECOND;
+                    }
+                    
+                    console.log("encodedChunk.duration",encodedChunk.duration)
+                    console.log("totalAudioEncodeCount", totalaudioEncodeCount)
                     audioEncodingTrackOptions.nb_samples = totalaudioEncodeCount;
-                    const trackDuration = cutDuration / ONE_SECOND_IN_MICROSECOND;
+
                     // audioEncodingTrackOptions.duration = trackDuration;
                     audioEncodingTrackOptions.duration = trackDuration * SAMPLE_RATE;
                     audioEncodingTrackOptions.media_duration = trackDuration * SAMPLE_RATE;
@@ -162,6 +174,7 @@ export const renderAudio = (props) => {
                 outputFile.addSample(encodingAudioTrack, buffer, audioEncodingSampleOptions);
 
                 encodedAudioFrameCount++;
+                console.log(encodedAudioFrameCount)
                 if (encodedAudioFrameCount >= totalaudioEncodeCount) {
                     isRenderFile = true;
                     onAudioEncodingComplete();
@@ -196,6 +209,7 @@ export const renderAudio = (props) => {
 
     const saveFile = () => {
         outputFile.save('video.mp4');
+        window.location.reload();
     };
 
     const startAudioConfig = () => {
@@ -244,31 +258,23 @@ export const renderAudio = (props) => {
         //                               |===> will call file.start();
     };
 
-    let testCount = 0;
     file.onSamples = (trackId, ref, samples) => {
         if (audioTrack.id == trackId) {
             file.stop();
             countSample += samples.length;
-
-            //console.log("onSample ",countSample+" VS "+nbSampleTotal)
-            // if (countSample > videoFrames.length) {
-            //   audioDecoder.flush();
-            // }
+            
             for (const sample of samples) {
-                testCount++;
-                if (testCount <= nbSampleTotal / 2) {
-                    const type = sample.is_sync ? 'key' : 'delta';
-                    const chunk = new window['EncodedAudioChunk']({
-                        type: type,
-                        timestamp: sample.cts,
-                        duration: sample.duration,
-                        data: sample.data,
-                        offset: sample.offset,
-                    });
-                    audioDecoder.decode(chunk);
-                }
+                const type = sample.is_sync ? 'key' : 'delta';
+                const chunk = new window['EncodedAudioChunk']({
+                    type: type,
+                    timestamp: sample.cts,
+                    duration: sample.duration,
+                    data: sample.data,
+                    offset: sample.offset,
+                });
+                audioDecoder.decode(chunk);
             }
-            if (countSample == nbSampleTotal / 2) {
+            if (countSample == nbSampleTotal) {
                 audioDecoder.flush();
             }
         }
@@ -278,39 +284,29 @@ export const renderAudio = (props) => {
     const resetField = () => {
         // audio variable
         // let audioUrl = "audio1.mp4";
-        let file = null;
-        let audioTrack = null
-        let encodingAudioTrack = null;
-        var countSample = 0;
-        var nbSampleTotal = 0;
-        let audioTotalTimestamp = 0;
-        const nbSampleMax = 30;
+        file = null;
+        audioTrack = null
+        encodingAudioTrack = null;
+        countSample = 0;
+        nbSampleTotal = 0;
+        audioTotalTimestamp = 0;
 
         //---- AUDIO DECODING VARIABLES
-        const FPS = 25;
-        const ONE_SECOND_IN_MICROSECOND = 1000000;
-        const BITRATE = 15000000;
-        const MICROSECONDS_PER_FRAME = ONE_SECOND_IN_MICROSECOND / FPS;
-        const SAMPLE_RATE = 44100;
+        encodedAudioFrameCount = 0;
+        waitingAudioReading = false;
+        handleAudioEncoding = true;
+        audioEncoder = null;
+        audioDecoder = null;
+        audioFrames = [];
+        decodedAudioFrameCount = 0;
+        processingAudio = false;
+        totalaudioEncodeCount = 0;
 
-        const encodingFrameDistance = 5;
-        let encodedAudioFrameCount = 0;
-        let waitingAudioReading = false;
-        var handleAudioEncoding = true;
-        var audioEncoder = null;
-        var audioDecoder = null;
-        var audioFrames = [];
-        var decodedAudioFrameCount = 0;
-        var processingAudio = false;
-        let totalaudioEncodeCount = 0;
-
-        let waitingFrame = false;
-        let isRenderFile = false;
+        waitingFrame = false;
+        isRenderFile = false;
     }
 
     let loadFile = (audioFile) => {
-        resetField();
-        console.log("audioFile", audioFile)
         var url = null;
         if (audioFile.name === undefined) {
             url = audioFile;
@@ -352,6 +348,6 @@ export const renderAudio = (props) => {
         console.log('audioReadyToPlay');
         getNextSampleArray();
     };
-
+    // resetField();
     loadFile(audioFile);
 };

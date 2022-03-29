@@ -3,7 +3,6 @@ import axios from 'axios';
 import { RBOLServerURL } from '../util/serverUrl';
 import Headers from '../utils/Headers';
 
-const baseURL = RBOLServerURL + "/api/auth";
 const SIGNIN_URL = RBOLServerURL +  '/api/auth/signin';
 const SIGNUP_URL = RBOLServerURL + '/api/auth/signup';
 

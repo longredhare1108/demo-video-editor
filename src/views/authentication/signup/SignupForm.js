@@ -147,9 +147,10 @@ export default function SignupForm({ ...others }) {
                             setStatus({ success: true });
                             setSubmitting(false);
                             
-                            AuthenticationController.signup(values);
+                            
                             console.log(values);
-                            navigate('../dashboard', { replace: true });
+                            AuthenticationController.signup(values);
+                            // navigate('../dashboard', { replace: true });
                         }
                     } catch (err) {
                         console.error(err);

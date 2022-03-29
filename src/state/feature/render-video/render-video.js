@@ -18,7 +18,7 @@ var videoDuration = 0;
 export const RenderVideo = (props) => {
     const { listOfImages, audioFile } = props;
     const initializeData = async () => {
-        await resetField();
+        // await resetField();
         for (let index = 0; index < listOfImages.length; index++) {
             videoDuration += listOfImages[index].duration;
             await fetch(listOfImages[index].src)
@@ -48,18 +48,19 @@ export const RenderVideo = (props) => {
             bitrate: 15000000,
             avc: { format: 'avc' },
         });
+
     };
 
     const resetField = () => {
-        let time = 0;
-        let videoFrames = [];
-        var videoEncoder = null;
-        var encodingVideoTrack = null;
-        var outputFile = null;
-        var encodedVideoFrameCount = 0;
-        var timestampImage = 0;
-        var fps = 25;
-        var videoDuration = 0;
+         time = 0;
+         videoFrames = [];
+         videoEncoder = null;
+         encodingVideoTrack = null;
+         outputFile = null;
+         encodedVideoFrameCount = 0;
+         timestampImage = 0;
+         fps = 25;
+         videoDuration = 0;
     }
 
     const onVideoEncodingComplete = () => {
@@ -77,8 +78,9 @@ export const RenderVideo = (props) => {
             outputFile,
             videoDuration,
         };
+        console.log(params)
         renderAudio(params);
-        
+
     }
 
     const encode = async () => {

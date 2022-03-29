@@ -141,9 +141,10 @@ export default function SigninForm({ ...others }) {
                             setStatus({ success: true });
                             setSubmitting(false);
                             dispatch(login(values))
-                            // AuthenticationController.signin(values);
+                            
                             console.log(values);
-                            navigate('../dashboard', { replace: true });
+                            AuthenticationController.signin(values);
+                            // navigate('../dashboard', { replace: true });
                         }
                     } catch (err) {
                         console.error(err);
