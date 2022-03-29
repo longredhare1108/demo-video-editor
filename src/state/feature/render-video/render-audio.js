@@ -274,14 +274,50 @@ export const renderAudio = (props) => {
         }
     };
 
+
+    const resetField = () => {
+        // audio variable
+        // let audioUrl = "audio1.mp4";
+        let file = null;
+        let audioTrack = null
+        let encodingAudioTrack = null;
+        var countSample = 0;
+        var nbSampleTotal = 0;
+        let audioTotalTimestamp = 0;
+        const nbSampleMax = 30;
+
+        //---- AUDIO DECODING VARIABLES
+        const FPS = 25;
+        const ONE_SECOND_IN_MICROSECOND = 1000000;
+        const BITRATE = 15000000;
+        const MICROSECONDS_PER_FRAME = ONE_SECOND_IN_MICROSECOND / FPS;
+        const SAMPLE_RATE = 44100;
+
+        const encodingFrameDistance = 5;
+        let encodedAudioFrameCount = 0;
+        let waitingAudioReading = false;
+        var handleAudioEncoding = true;
+        var audioEncoder = null;
+        var audioDecoder = null;
+        var audioFrames = [];
+        var decodedAudioFrameCount = 0;
+        var processingAudio = false;
+        let totalaudioEncodeCount = 0;
+
+        let waitingFrame = false;
+        let isRenderFile = false;
+    }
+
     let loadFile = (audioFile) => {
-        console.log('audioFile', audioFile);
+        resetField();
+        console.log("audioFile", audioFile)
         var url = null;
         if (audioFile.name === undefined) {
             url = audioFile;
         } else {
             url = URL.createObjectURL(audioFile);
         }
+        console.log("url", url)
         fetch(url).then((response) => {
             //we fill our Mp4BoxFile with the data of our video file
             let offset = 0;

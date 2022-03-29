@@ -1,6 +1,5 @@
-import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
-
+import React, { useEffect } from 'react';
+import { useState } from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -24,14 +23,19 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import {  mainListItems, secondaryListItems } from './listItems';
-import Deposits from './Deposits';
-import Orders from './Orders';
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+import { mainListItems, secondaryListItems } from '../student/listItems';
 
-import Copyright from '../../../components/copyright/Copyright';
-import { useDispatch } from 'react-redux';
 
-import { logout } from '../../../state/feature/user/user-action';
+import { RenderVideo } from "../../../state/feature/render-video/render-video"
+
+const fileTypes = ["JPG", "PNG", "GIF", "mp4"];
+const items = [{
+    start: new Date(2022, 2, 9),
+    end: new Date(2022, 2, 9),  // end is optional
+    content: 'Trajectory A'
+}]
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const drawerWidth = 240;
@@ -81,19 +85,45 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 const mdTheme = createTheme();
-
-function DashboardContent() {
-    const navigate = useNavigate();
+const ResourceHub = () => {
+    const [options, setOptions] = useState({
+        zoomKey: "ctrlKey",
+        horizontalScroll: true,
+        verticalScroll: true,
+        orientation: "top",
+        moveable: true,
+        zoomable: true,
+        editable: true,
+        min: 0,
+        max: 100000,
+        start: 0,
+        end: 61000,
+        zoomMax: 5000,
+        zoomMin: 1000,
+        stack: true,
+        showCurrentTime: true,
+        multiselect: true,
+        multiselectPerGroup: true,
+        width: "100%",
+        autoResize: true,
+        // timeAxis: { scale: 'second', step: 1 },
+        showMajorLabels: false,
+        // rtl: true
+    });
     const [open, setOpen] = React.useState(true);
-    const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
-    const dispatch = useDispatch();
+    const [anchorElNav, setAnchorElNav] = React.useState(null);
+    const [file, setFile] = useState(null);
+    const [duration, setDuration] = useState(0);
+    const [image, setImage] = useState(null);
+    const [fileUrls, setFileUrls] = useState([]);
+    const [videoFilePath, setVideoFilePath] = useState(null);
+    const [audioFile, setAudioFile] = useState(null);
+    useEffect(() => {
+    })
+
     const toggleDrawer = () => {
         setOpen(!open);
-    };
-
-    const handleOpenNavMenu = (event) => {
-        setAnchorElNav(event.currentTarget);
     };
 
     const handleOpenUserMenu = (event) => {
@@ -101,9 +131,6 @@ function DashboardContent() {
     };
 
     const handleCloseNavMenu = (e) => {
-        if(e.target.innerHTML === "Logout"){
-            dispatch(logout());
-        }
         setAnchorElNav(null);
     };
 
@@ -111,25 +138,16 @@ function DashboardContent() {
         setAnchorElUser(null);
     };
 
-    const handleDashboardClick = () => {
-        handleCloseNavMenu();
-        navigate('/dashboard', { replace: true });
+    const onFileChange = (event) => {
+
+        console.log("file", event.target.files[0])
+        setAudioFile(event.target.files[0])
     };
 
-    const handleSettingsClick = () => {
-        handleCloseNavMenu();
-        navigate('/', { replace: true });
-    };
-
-    const handleLogout = (e) => {
-        handleCloseNavMenu();
-        if (e.target.innerHTML === 'Logout') {
-            dispatch(logout());
-        }
-        //navigate('/', { replace: true });
-    };
 
     return (
+
+
         <ThemeProvider theme={mdTheme}>
             <Box sx={{ display: 'flex' }}>
                 <CssBaseline />
@@ -158,7 +176,7 @@ function DashboardContent() {
                             noWrap
                             sx={{ flexGrow: 1 }}
                         >
-                            Dashboard
+                            ResourceHub
                         </Typography>
                         <IconButton color="inherit" sx={{ marginRight: '24px' }}>
                             <Badge badgeContent={4} color="secondary">
@@ -212,7 +230,7 @@ function DashboardContent() {
                     <Divider />
                     <List>
                         {mainListItems}
-                        </List>
+                    </List>
                     <Divider />
                     <List>{open && secondaryListItems}</List>
                 </Drawer>
@@ -231,47 +249,22 @@ function DashboardContent() {
                     <Toolbar />
                     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                         <Grid container spacing={3}>
-                            {/* Chart */}
-                            <Grid item xs={12} md={8} lg={9}>
-                                <Paper
-                                    sx={{
-                                        p: 2,
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        height: 240,
-                                    }}
-                                >
-                                    {/* <Chart /> */}
-                                </Paper>
-                            </Grid>
-                            {/* Recent Deposits */}
-                            <Grid item xs={12} md={4} lg={3}>
-                                <Paper
-                                    sx={{
-                                        p: 2,
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        height: 240,
-                                    }}
-                                >
-                                    <Deposits />
-                                </Paper>
-                            </Grid>
                             {/* Recent Orders */}
                             <Grid item xs={12}>
-                                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                                    <Orders />
-                                </Paper>
+                                <input type="file" onChange={onFileChange} />
+                                <RenderVideo audioFile={audioFile} listOfImages={[
+                                    {
+                                        src: 'https://media.istockphoto.com/photos/eagle-hunter-standing-on-the-background-of-mountains-in-kyrgyzstan-picture-id1341309784?b=1&k=20&m=1341309784&s=170667a&w=0&h=i1AHUOcYCL6_UPAHQWRyJtPXtlzgQfln7TlPf-hcrIs=',
+                                        duration: 5000
+                                    }
+                                ]} />
                             </Grid>
                         </Grid>
-                        <Copyright sx={{ pt: 4 }} />
                     </Container>
                 </Box>
             </Box>
         </ThemeProvider>
-    );
+    )
 }
 
-export default function Dashboard() {
-    return <DashboardContent />;
-}
+export default ResourceHub;

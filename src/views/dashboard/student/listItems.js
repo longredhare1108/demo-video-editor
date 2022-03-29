@@ -16,7 +16,7 @@ import HistoryIcon from '@mui/icons-material/History';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import CelebrationIcon from '@mui/icons-material/Celebration';
 import CakeIcon from '@mui/icons-material/Cake';
-
+import HubIcon from '@mui/icons-material/Hub';
 export const mainListItems = (
     <div>
         <ListItem button>
@@ -27,9 +27,9 @@ export const mainListItems = (
         </ListItem>
         <ListItem button>
             <ListItemIcon>
-                <ClassIcon />
+                <HubIcon />
             </ListItemIcon>
-            <ListItemText primary="Classes" />
+            <ListItemText primary="Resource Hub" onClick={() => window.location.href = "/resourceHub"} />
         </ListItem>
         <ListItem button>
             <ListItemIcon>

@@ -18,6 +18,7 @@ var videoDuration = 0;
 export const RenderVideo = (props) => {
     const { listOfImages, audioFile } = props;
     const initializeData = async () => {
+        await resetField();
         for (let index = 0; index < listOfImages.length; index++) {
             videoDuration += listOfImages[index].duration;
             await fetch(listOfImages[index].src)
@@ -49,6 +50,18 @@ export const RenderVideo = (props) => {
         });
     };
 
+    const resetField = () => {
+        let time = 0;
+        let videoFrames = [];
+        var videoEncoder = null;
+        var encodingVideoTrack = null;
+        var outputFile = null;
+        var encodedVideoFrameCount = 0;
+        var timestampImage = 0;
+        var fps = 25;
+        var videoDuration = 0;
+    }
+
     const onVideoEncodingComplete = () => {
         console.log('video encoding complete !');
         videoEncoder.close(); //<=== in chrome 93 I must add a timeout in order to close the videoEncoder without error (ok in canary)
@@ -65,7 +78,8 @@ export const RenderVideo = (props) => {
             videoDuration,
         };
         renderAudio(params);
-    };
+        
+    }
 
     const encode = async () => {
         await initializeData();
