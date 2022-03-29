@@ -10,6 +10,7 @@
     "@mui/styles": "^5.2.3",
     "@reduxjs/toolkit": "^1.7.1",
     "@scenejs/effects": "^1.0.1",
+    "@tabler/icons": "^1.59.0",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",

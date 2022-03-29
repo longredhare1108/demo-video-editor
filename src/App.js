@@ -13,7 +13,6 @@ import StudentDashboard from './views/dashboard/student/StudentDashboard';
 import CompanyDashboard from './views/dashboard/company/CompanyDashboard';
 import MainLayout from './components/layout/MainLayout/MainLayout';
 import AnimaticCreator from './views/animatic-creator/AnimaticCreator';
-//import TimelineControlEditor from './views/animatic-creator/TimelineControlEditor';
 
 export default function App() {
     const customization = useSelector((state) => state.customization);
@@ -25,13 +24,12 @@ export default function App() {
                 <Routes>
                     <Route path="/login" element={<SigninPage />} />
                     <Route path="/" element={<SigninPage />} />
-                    <Route path="signup" element={<SignupPage />} />
-                    <Route path="dashboard" element={<StudentDashboard />} />
-                    <Route path="dashboard/creator" element={<MainLayout />}>
+                    <Route path="/signup" element={<SignupPage />} />
+                    <Route path="/dashboard" element={<StudentDashboard />} />
+                    <Route path="/dashboard/creator" element={<MainLayout />}>
                         <Route path="/dashboard/creator" element={<CompanyDashboard />} />
                     </Route>
-                    <Route path="animatic" element={<AnimaticCreator />} />
-                    {/* <Route path="animatic" element={<TimelineControlEditor />} /> */}
+                    <Route path="/animatic" element={<AnimaticCreator />} />
                     <Route path="*" element={<Navigate to="/signin" />} />
                 </Routes>
             </ThemeProvider>
