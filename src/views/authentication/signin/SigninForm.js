@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useTheme } from '@mui/material/styles';
 import {
@@ -37,6 +38,7 @@ export default function SigninForm({ ...others }) {
     const dispatch = useDispatch();
     const theme = useTheme();
     const scriptedRef = useScriptRef();
+    const navigate = useNavigate();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
     const [checked, setChecked] = useState(true);
     const [showPassword, setShowPassword] = useState(false);
@@ -140,6 +142,8 @@ export default function SigninForm({ ...others }) {
                             setSubmitting(false);
                             dispatch(login(values))
                             // AuthenticationController.signin(values);
+                            console.log(values);
+                            navigate('../dashboard', { replace: true });
                         }
                     } catch (err) {
                         console.error(err);

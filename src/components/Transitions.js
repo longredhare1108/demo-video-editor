@@ -2,6 +2,7 @@ import { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 
 import { Collapse, Fade, Box, Grow, Slide, Zoom } from '@mui/material';
+
 const Transitions = forwardRef(({ children, position, type, direction, ...others }, ref) => {
     let positionSX = {
         transformOrigin: '0 0 0',

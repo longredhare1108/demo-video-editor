@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -30,7 +31,7 @@ import Orders from './Orders';
 import Copyright from '../../../components/copyright/Copyright';
 import { useDispatch } from 'react-redux';
 
-import {logout} from '../../../state/feature/user/user-action';
+import { logout } from '../../../state/feature/user/user-action';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const drawerWidth = 240;
@@ -82,6 +83,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const mdTheme = createTheme();
 
 function DashboardContent() {
+    const navigate = useNavigate();
     const [open, setOpen] = React.useState(true);
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -107,6 +109,24 @@ function DashboardContent() {
 
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
+    };
+
+    const handleDashboardClick = () => {
+        handleCloseNavMenu();
+        navigate('/dashboard', { replace: true });
+    };
+
+    const handleSettingsClick = () => {
+        handleCloseNavMenu();
+        navigate('/', { replace: true });
+    };
+
+    const handleLogout = (e) => {
+        handleCloseNavMenu();
+        if (e.target.innerHTML === 'Logout') {
+            dispatch(logout());
+        }
+        //navigate('/', { replace: true });
     };
 
     return (
