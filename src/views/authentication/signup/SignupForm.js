@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useTheme } from '@mui/material/styles';
 import {
@@ -36,6 +36,7 @@ import GoogleIcon from '../../../assets/images/icons/social-google.svg';
 export default function SignupForm({ ...others }) {
     const theme = useTheme();
     const scriptedRef = useScriptRef();
+    const navigate = useNavigate();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
     const [showPassword, setShowPassword] = useState(false);
     const [checked, setChecked] = useState(true);
@@ -146,8 +147,10 @@ export default function SignupForm({ ...others }) {
                             setStatus({ success: true });
                             setSubmitting(false);
                             
-                            AuthenticationController.signup(values);
+                            
                             console.log(values);
+                            // AuthenticationController.signup(values);
+                            navigate('../dashboard', { replace: true });
                         }
                     } catch (err) {
                         console.error(err);
