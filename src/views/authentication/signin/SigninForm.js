@@ -143,8 +143,8 @@ export default function SigninForm({ ...others }) {
                             dispatch(login(values))
                             
                             console.log(values);
-                            AuthenticationController.signin(values);
-                            // navigate('../dashboard', { replace: true });
+                            // AuthenticationController.signin(values);
+                            navigate('../dashboard', { replace: true });
                         }
                     } catch (err) {
                         console.error(err);
