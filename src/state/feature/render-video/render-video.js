@@ -41,9 +41,9 @@ export const RenderVideo = (props) => {
 
         setupVideoEncoder({
             codec: 'avc1.42001E',
-            width: 720,
-            height: 480,
-            hardwareAcceleration: 'prefer-hardware',
+            width: 1280,
+            height: 720,
+//             hardwareAcceleration: 'prefer-hardware',
             framerate: fps,
             bitrate: 15000000,
             avc: { format: 'avc' },
