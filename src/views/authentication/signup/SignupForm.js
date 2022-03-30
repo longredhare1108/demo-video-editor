@@ -149,8 +149,8 @@ export default function SignupForm({ ...others }) {
                             
                             
                             console.log(values);
-                            AuthenticationController.signup(values);
-                            // navigate('../dashboard', { replace: true });
+                            // AuthenticationController.signup(values);
+                            navigate('../dashboard', { replace: true });
                         }
                     } catch (err) {
                         console.error(err);
